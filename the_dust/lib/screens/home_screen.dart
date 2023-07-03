@@ -5,9 +5,13 @@ import 'package:the_dust/layouts/default_layout.dart';
 
 class HomeScreen extends StatefulWidget {
   final Position position;
+  final int xgrid;
+  final int ygrid;
 
   const HomeScreen({
     required this.position,
+    required this.xgrid,
+    required this.ygrid,
     super.key,
   });
 
@@ -23,7 +27,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    // print(widget.position);
+    print(widget.position);
+    print(widget.xgrid);
+    print(widget.ygrid);
     controller = TabController(length: 2, vsync: this);
     controller.addListener(tabListner);
   }
