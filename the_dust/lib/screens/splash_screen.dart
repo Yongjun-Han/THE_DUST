@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/layouts/default_layout.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:the_dust/screens/home_screen.dart';
+// import 'package:geolocator/geolocator.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,14 +16,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkLocation();
+    getLocation();
   }
 
-  void checkLocation() {
+  void getLocation() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    // print(position);
+
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => HomeScreen(
+            position: position,
+          ),
         ),
       );
     });
@@ -33,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
       bgColor: Colors.black,
       child: Center(
         child: LoadingAnimationWidget.dotsTriangle(
-          color: const Color.fromARGB(255, 0, 166, 255),
+          color: const Color.fromARGB(255, 179, 255, 0),
           size: 32,
         ),
       ),

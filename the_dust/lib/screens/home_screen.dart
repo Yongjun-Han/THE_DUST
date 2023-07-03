@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/layouts/default_layout.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Position position;
+
+  const HomeScreen({
+    required this.position,
+    super.key,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    // print(widget.position);
     controller = TabController(length: 2, vsync: this);
     controller.addListener(tabListner);
   }
@@ -44,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
             highlightColor: Colors.transparent,
           ),
           child: BottomNavigationBar(
-            backgroundColor: Colors.black,
+            backgroundColor: const Color.fromARGB(255, 20, 20, 20),
             selectedItemColor: Colors.white,
             unselectedItemColor: const Color.fromARGB(255, 95, 95, 95),
             selectedFontSize: 10,
