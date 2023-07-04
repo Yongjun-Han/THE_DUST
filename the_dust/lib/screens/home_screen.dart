@@ -81,16 +81,39 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         child: TabBarView(
           controller: controller,
-          children: const [
+          children: [
             Center(
-              child: Text(
-                "hello :)",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Grid X : ${widget.xgrid.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "Grid X : ${widget.ygrid.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "LAT : ${widget.position.latitude.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "LNG : ${widget.position.longitude.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 "settings",
                 style: TextStyle(
