@@ -85,3 +85,11 @@ flutter:
           weight: 800
         - asset: lib/assets/fonts/Pretendard-Black.ttf
           weight: 900
+  assets:
+  - lib/assets/icons/menu.png
+  - lib/assets/image/GOOD.png
+  - lib/assets/image/NICE.png
+  - lib/assets/image/MODERATE.png
+  - lib/assets/image/UNHEALTHY.png
+  - lib/assets/image/VERY_UNHEALTHY.png
+  - lib/assets/image/HAZARDOUS.png

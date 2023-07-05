@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/calc/gps2grid.dart';
+import 'package:the_dust/color/colors.dart';
 import 'package:the_dust/layouts/default_layout.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:the_dust/screens/home_screen.dart';
@@ -40,6 +41,8 @@ class _SplashScreenState extends State<SplashScreen> {
             position: position,
             xgrid: xgrid,
             ygrid: ygrid,
+            bgColor: GOOD,
+            currentLocation: "서구 탄방동",
           ),
         ),
       );

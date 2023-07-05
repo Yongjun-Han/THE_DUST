@@ -33,7 +33,7 @@ class DefaultLayout extends StatelessWidget {
       return AppBar(
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        backgroundColor: Colors.black,
+        backgroundColor: GOOD,
         elevation: 0,
         title: Text(
           title!,
