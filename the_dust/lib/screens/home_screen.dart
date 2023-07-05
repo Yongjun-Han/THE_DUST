@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -57,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: widget.bgColor,
       appBar: AppBar(
+        centerTitle: true,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
@@ -66,16 +68,23 @@ class _HomeScreenState extends State<HomeScreen>
           onTap: () {
             print("MENU");
           },
-          child: Image.asset("lib/assets/icons/menu.png"),
+          child: const Icon(Icons.notes_sharp),
         ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
             child: Icon(
-              Icons.my_location_rounded,
+              CupertinoIcons.search,
               color: Colors.black,
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 18),
+            child: Icon(
+              CupertinoIcons.location_fill,
+              color: Colors.black,
+            ),
+          ),
         ],
         title: Column(
           children: [
