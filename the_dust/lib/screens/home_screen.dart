@@ -35,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-
+    print(widget.data['userDong']);
+    print(widget.data['userSi']);
+    print(widget.data['dust']);
+    print(widget.data['station']);
     controller = TabController(length: 2, vsync: this);
     controller.addListener(tabListner);
   }

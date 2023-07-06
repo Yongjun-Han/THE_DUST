@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   //SGIS AuthToken -> GPS 를 TM 좌표값으로 변환 -> 근첩 측정소 조회 -> 해당 측정소로 대기정보 요청
   //SGIS 인증토큰 발급
-  void getAuthToken() async {
+  Future<void> getAuthToken() async {
     final Gps2Tm tm;
     tm = Gps2Tm(dio);
     await tm
@@ -75,7 +75,6 @@ class _SplashScreenState extends State<SplashScreen> {
             key: "d7fb11be307f45dcbaa6", secret: "56b1d86baff049ae866a")
         .then((value) async {
       await storage.write(key: accessToken, value: value.result['accessToken']);
-      getAddress();
       //GPS 를 TM 좌표값으로 변환
       final lat = await storage.read(key: LAT);
       final lng = await storage.read(key: LNG);
@@ -86,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
           posY: double.parse(lat!));
       return res;
     }).then((value) async {
-      print(value.result);
+      // print(value.result);
       final Tm2NearStation station;
       station = Tm2NearStation(dio);
 
@@ -97,21 +96,31 @@ class _SplashScreenState extends State<SplashScreen> {
     }).then((value) {
       //홈으로 넘겨줄 미세먼지 측정 관측소 이름
       dataBundle['station'] = value.response['body']['items'][0]['stationName'];
-      print(value.response['body']['items'][0]['stationName']);
+      // print(value.response['body']['items'][0]['stationName']);
       final station = value.response['body']['items'][0]['stationName'];
       final Tm2NearStation condition;
       condition = Tm2NearStation(dio);
       final res = condition.getAirCondition(stationName: station);
       return res;
     }).then((value) {
-      print(value.response['body']['items'][0]);
+      // print(value.response['body']['items'][0]);
       //홈으로 넘겨줄 미세먼지 측정 데이터
       dataBundle['dust'] = value.response['body']['items'][0];
-      dataBundle['temp'] = 26;
+    }).then((value) async {
+      await getAddress();
+    }).then((value) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => HomeScreen(
+            data: dataBundle,
+            bgColor: GOOD,
+          ),
+        ),
+      );
     });
   }
 
-  void getAddress() async {
+  Future<void> getAddress() async {
     final Gps2Tm tm;
     tm = Gps2Tm(dio);
     await tm
@@ -129,7 +138,7 @@ class _SplashScreenState extends State<SplashScreen> {
           dst: 5179);
       return res;
     }).then((value) async {
-      print(value.result);
+      // print(value.result);
       final token = await storage.read(key: accessToken);
       final tmX = value.result['posX'];
       final tmY = value.result['posY'];
@@ -143,26 +152,22 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       dataBundle['userSi'] = value.result[0]['sgg_nm'];
       dataBundle['userDong'] = value.result[0]['emdong_nm'];
-      print(value.result[0]['emdong_nm']);
-    }).then((value) {
-      if (dataBundle['station'] != null &&
-          dataBundle['dust'] != null &&
-          dataBundle['userDong'] != null &&
-          dataBundle['userSi'] != null &&
-          dataBundle['temp'] != null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => HomeScreen(
-              data: dataBundle,
-              bgColor: GOOD,
-            ),
-          ),
-        );
-      } else {
-        return;
-      }
+      // print(value.result[0]['emdong_nm']);
     });
     // 36.343459  127.392446
+    // if (dataBundle['dust'] != null) {
+    //   print("DATA FECTH DONE");
+    //   Navigator.of(context).push(
+    //     MaterialPageRoute(
+    //       builder: (_) => HomeScreen(
+    //         data: dataBundle,
+    //         bgColor: GOOD,
+    //       ),
+    //     ),
+    //   );
+    // } else {
+    //   return;
+    // }
 
     // address = Gps2Tm(dio);
     // //좌표 -> utmk 변환
