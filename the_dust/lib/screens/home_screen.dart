@@ -1,24 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/color/colors.dart';
 import 'package:the_dust/widgets/air_cast.dart';
 import 'package:the_dust/widgets/air_condition.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Position position;
-  final int xgrid;
-  final int ygrid;
+  final Map<dynamic, dynamic> data;
+  // final Position position;
+  // final int xgrid;
+  // final int ygrid;
   final Color bgColor;
-  final String currentLocation;
+  // final String currentLocation;
 
   const HomeScreen({
-    required this.position,
-    required this.xgrid,
-    required this.ygrid,
+    required this.data,
+    // required this.position,
+    // required this.xgrid,
+    // required this.ygrid,
     required this.bgColor,
-    required this.currentLocation,
+    // required this.currentLocation,
     super.key,
   });
 
@@ -34,9 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    print(widget.position);
-    print(widget.xgrid);
-    print(widget.ygrid);
+
     controller = TabController(length: 2, vsync: this);
     controller.addListener(tabListner);
   }
@@ -86,11 +85,11 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ],
-        title: Column(
+        title: const Column(
           children: [
             Text(
-              widget.currentLocation,
-              style: const TextStyle(
+              "서구 탄방동",
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
