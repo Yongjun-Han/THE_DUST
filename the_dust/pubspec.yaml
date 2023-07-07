@@ -52,6 +52,9 @@ dependencies:
   skeletons: ^0.0.3
   flutter_svg: ^2.0.7
   shimmer: ^3.0.0
+  intl:
+  flutter_localizations:
+    sdk: flutter
   
 
 dev_dependencies:

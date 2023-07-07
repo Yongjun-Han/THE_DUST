@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:the_dust/models/get_temp.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
@@ -53,7 +54,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<String> getTemp() async {
     DateTime dt = DateTime.now();
-    final time = int.parse("${dt.hour}" "${dt.minute}");
+    // final String today = DateFormat.EEEE().format(dt);
+    // print(today);
+    final int time;
+    if (dt.minute <= 40) {
+      time = int.parse("${dt.hour - 1}00");
+      print(time);
+    } else {
+      time = int.parse("${dt.hour}00");
+      print(time);
+    }
     final GetTemp temp;
     temp = GetTemp(dio);
     final res = await temp.getTemp(
@@ -73,6 +83,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final String emojiPath = ref.watch(emojiProvider);
     final String dustMessage = ref.watch(dustMessageProvider);
     DateTime dt = DateTime.now();
+    final String dayOfWeek = DateFormat.EEEE('ko').format(dt).substring(0, 1);
+    // print(DateFormat.EEEE('ko').format(dt));
     return Scaffold(
       backgroundColor: pm10ColorState,
       appBar: AppBar(
@@ -123,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         strokeWidth: 3,
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1));
-          print("36.343459/127.392446");
+          print("새로고침");
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -148,7 +160,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "${dt.month}월 ${dt.day}일",
+                    "${dt.month}월 ${dt.day}일 [$dayOfWeek]",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -241,79 +253,3 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 }
-
-    // return DefaultLayout(
-    //     title: "서구 탄방동",
-    //     bgColor: GOOD,
-    //     bottomNavigationBar: Theme(
-    //       data: ThemeData(
-    //         splashColor: Colors.transparent,
-    //         highlightColor: Colors.transparent,
-    //       ),
-    //       child: BottomNavigationBar(
-    //         backgroundColor: GOOD,
-    //         selectedItemColor: Colors.white,
-    //         unselectedItemColor: const Color.fromARGB(255, 95, 95, 95),
-    //         selectedFontSize: 10,
-    //         unselectedFontSize: 10,
-    //         type: BottomNavigationBarType.fixed,
-    //         onTap: (int index) {
-    //           controller.animateTo(index);
-    //         },
-    //         currentIndex: index,
-    //         items: const [
-    //           BottomNavigationBarItem(
-    //             icon: Icon(CupertinoIcons.house_alt),
-    //             label: '홈',
-    //           ),
-    //           BottomNavigationBarItem(
-    //             icon: Icon(Icons.map_outlined),
-    //             label: '설정',
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //     child: TabBarView(
-    //       controller: controller,
-    //       children: [
-    //         Center(
-    //           child: Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               Text(
-    //                 "Grid X : ${widget.xgrid.toString()}",
-    //                 style: const TextStyle(
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //               Text(
-    //                 "Grid X : ${widget.ygrid.toString()}",
-    //                 style: const TextStyle(
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //               Text(
-    //                 "LAT : ${widget.position.latitude.toString()}",
-    //                 style: const TextStyle(
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //               Text(
-    //                 "LNG : ${widget.position.longitude.toString()}",
-    //                 style: const TextStyle(
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         const Center(
-    //           child: Text(
-    //             "settings",
-    //             style: TextStyle(
-    //               color: Colors.white,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ));

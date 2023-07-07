@@ -103,10 +103,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       return res;
     }).then((value) {
       // final List<AirColorModel> airColorState = ref.watch(airColorProvider);
-      // final pm10level = int.parse(
-      //   value.response['body']['items'][0]['pm10Value'],
-      // );
-      const pm10level = 60;
+      final pm10level = int.parse(
+        value.response['body']['items'][0]['pm10Value'],
+      );
+      // const pm10level = 60;
       // final pm25level = int.parse(
       //   value.response['body']['items'][0]['pm25Value'],
       // );

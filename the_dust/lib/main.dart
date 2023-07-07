@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/screens/splash_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const ProviderScope(child: _App()));
@@ -18,6 +19,13 @@ class _App extends StatelessWidget {
         ),
         child: child!,
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: const [Locale('ko', 'KR')],
+      locale: const Locale('ko'),
       theme: ThemeData(
         fontFamily: 'Pretendard',
       ),
