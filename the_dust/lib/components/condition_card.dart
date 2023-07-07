@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_dust/utils/air_condition_notifier.dart';
 
-class ConditionCard extends StatelessWidget {
+class ConditionCard extends ConsumerWidget {
   final int data;
   final String category, condition;
 
@@ -13,7 +14,9 @@ class ConditionCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Color bgColorState = ref.watch(pm10ColorProvider);
+
     return ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
@@ -27,8 +30,8 @@ class ConditionCard extends StatelessWidget {
             children: [
               Text(
                 data.toString(),
-                style: const TextStyle(
-                  color: GOOD,
+                style: TextStyle(
+                  color: bgColorState,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -38,8 +41,8 @@ class ConditionCard extends StatelessWidget {
               ),
               Text(
                 category,
-                style: const TextStyle(
-                  color: GOOD,
+                style: TextStyle(
+                  color: bgColorState,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -49,8 +52,8 @@ class ConditionCard extends StatelessWidget {
               ),
               Text(
                 condition,
-                style: const TextStyle(
-                  color: GOOD,
+                style: TextStyle(
+                  color: bgColorState,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),

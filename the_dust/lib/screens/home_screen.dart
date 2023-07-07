@@ -1,64 +1,80 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:the_dust/models/get_temp.dart';
+import 'package:the_dust/utils/air_condition_notifier.dart';
 import 'package:the_dust/widgets/air_cast.dart';
 import 'package:the_dust/widgets/air_condition.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   final Map<dynamic, dynamic> data;
-  // final Position position;
-  // final int xgrid;
-  // final int ygrid;
   final Color bgColor;
-  // final String currentLocation;
 
   const HomeScreen({
     required this.data,
-    // required this.position,
-    // required this.xgrid,
-    // required this.ygrid,
     required this.bgColor,
-    // required this.currentLocation,
     super.key,
   });
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController controller;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   int index = 0;
+  final Dio dio = Dio();
 
   @override
   void initState() {
     super.initState();
-    print(widget.data['userDong']);
-    print(widget.data['userSi']);
+    // print(widget.bgColor);
+    // print(widget.data['userSi']);
+    // print(widget.data['userDong']);
+    // print(widget.data['station']);
     print(widget.data['dust']);
-    print(widget.data['station']);
-    controller = TabController(length: 2, vsync: this);
-    controller.addListener(tabListner);
+    // controller = TabController(length: 2, vsync: this);
+    // controller.addListener(tabListner);
   }
 
-  @override
-  void dispose() {
-    controller.removeListener(tabListner);
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.removeListener(tabListner);
+  //   super.dispose();
+  // }
 
-  void tabListner() {
-    setState(() {
-      index = controller.index;
-    });
+  // void tabListner() {
+  //   setState(() {
+  //     index = controller.index;
+  //   });
+  // }
+
+  Future<String> getTemp() async {
+    DateTime dt = DateTime.now();
+    final time = int.parse("${dt.hour}" "${dt.minute}");
+    final GetTemp temp;
+    temp = GetTemp(dio);
+    final res = await temp.getTemp(
+      date: 20230707,
+      time: time,
+      nx: widget.data['xgrid'],
+      ny: widget.data['ygrid'],
+    );
+    final temperature = res.response['body']['items']['item'][3]['obsrValue'];
+    // print(res.response['body']['items']['item'][3]['obsrValue']);
+    return temperature;
   }
 
   @override
   Widget build(BuildContext context) {
+    final Color pm10ColorState = ref.watch(pm10ColorProvider);
+    final String emojiPath = ref.watch(emojiProvider);
+    final String dustMessage = ref.watch(dustMessageProvider);
+    DateTime dt = DateTime.now();
     return Scaffold(
-      backgroundColor: widget.bgColor,
+      backgroundColor: pm10ColorState,
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -88,11 +104,11 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ],
-        title: const Column(
+        title: Column(
           children: [
             Text(
-              "서구 탄방동",
-              style: TextStyle(
+              "${widget.data['userSi']} ${widget.data['userDong']}",
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -103,11 +119,11 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       body: RefreshIndicator(
         backgroundColor: Colors.black,
-        color: GOOD,
+        color: pm10ColorState,
         strokeWidth: 3,
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1));
-          print("DD");
+          print("36.343459/127.392446");
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -121,43 +137,62 @@ class _HomeScreenState extends State<HomeScreen>
                 width: 120,
                 height: 120,
                 child: Image.asset(
-                  "lib/assets/image/GOOD.png",
+                  emojiPath,
                   fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(
                 height: 36,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "06.30 금요일",
-                    style: TextStyle(
+                    "${dt.month}월 ${dt.day}일",
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
-                  Text(
-                    "17℃",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  FutureBuilder(
+                    future: getTemp(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Shimmer.fromColors(
+                          baseColor: pm10ColorState,
+                          highlightColor: Colors.black38,
+                          child: Container(
+                            height: 18,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black26,
+                            ),
+                          ),
+                        );
+                      }
+                      return Text(
+                        "${snapshot.data}℃",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
               const SizedBox(
                 height: 6,
               ),
-              const Text(
-                "미세먼지 좋음",
-                style: TextStyle(
+              Text(
+                "미세먼지 $dustMessage",
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),

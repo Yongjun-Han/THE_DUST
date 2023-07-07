@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/components/condition_card.dart';
 
-class AirCondition extends StatelessWidget {
+class AirCondition extends ConsumerWidget {
   const AirCondition({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
