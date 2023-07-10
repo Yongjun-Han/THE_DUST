@@ -66,13 +66,14 @@ class DustColor {
 
   //오존
   static o3Calc(double o3Value, WidgetRef ref) {
-    if (o3Value <= 0.03) {
+    if (o3Value <= 0.030) {
       ref.read(o3ColorProvider.notifier).update((state) => GOOD);
       ref.read(o3MessageProvider.notifier).update((state) => "좋음");
     } else if (o3Value > 0.030 && o3Value <= 0.060) {
       ref.read(o3ColorProvider.notifier).update((state) => NICE);
       ref.read(o3MessageProvider.notifier).update((state) => "양호");
     } else if (o3Value > 0.060 && o3Value <= 0.090) {
+      print("SDFS $o3Value");
       ref.read(o3ColorProvider.notifier).update((state) => MODERATE);
       ref.read(o3MessageProvider.notifier).update((state) => "보통");
     } else if (o3Value > 0.090 && o3Value <= 0.200) {

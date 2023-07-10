@@ -5,8 +5,10 @@ import 'package:the_dust/utils/air_condition_notifier.dart';
 class ConditionCard extends ConsumerWidget {
   final String data;
   final String category, condition;
+  final Color colors;
 
   const ConditionCard({
+    required this.colors,
     required this.data,
     required this.category,
     required this.condition,
@@ -31,7 +33,7 @@ class ConditionCard extends ConsumerWidget {
               Text(
                 data,
                 style: TextStyle(
-                  color: bgColorState,
+                  color: colors,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -42,7 +44,7 @@ class ConditionCard extends ConsumerWidget {
               Text(
                 category,
                 style: TextStyle(
-                  color: bgColorState,
+                  color: colors,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -53,7 +55,7 @@ class ConditionCard extends ConsumerWidget {
               Text(
                 condition,
                 style: TextStyle(
-                  color: bgColorState,
+                  color: colors,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),

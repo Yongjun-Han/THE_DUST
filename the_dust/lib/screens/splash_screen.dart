@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/calc/gps2grid.dart';
-import 'package:the_dust/calc/pm10color.dart';
+import 'package:the_dust/calc/airCalc.dart';
 import 'package:the_dust/const/data/data.dart';
 import 'package:the_dust/layouts/default_layout.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -186,7 +186,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         so2 = double.parse(value[0][0]['so2Value']);
         stationList.add(stationNameList[0]);
       }
-
       airDataList.add(so2);
 
       final double co;
