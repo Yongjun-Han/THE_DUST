@@ -1,12 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/components/condition_card.dart';
+import 'package:the_dust/const/data/data.dart';
+import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class AirCondition extends ConsumerWidget {
-  const AirCondition({super.key});
+  final List<dynamic> data;
+
+  const AirCondition({
+    required this.data,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pm10State = ref.watch(pm10MessageProvider);
+    final pm25State = ref.watch(pm25MessageProvider);
+    final o3State = ref.watch(o3MessageProvider);
+    final no2State = ref.watch(no2MessageProvider);
+    final so2State = ref.watch(so2MessageProvider);
+    final coState = ref.watch(coMessageProvider);
+
+    final List airStateList = [
+      pm10State,
+      pm25State,
+      o3State,
+      no2State,
+      so2State,
+      coState
+    ];
+
+    print(airStateList);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
@@ -28,9 +53,13 @@ class AirCondition extends ConsumerWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
-                return const Row(
+                return Row(
                   children: [
-                    ConditionCard(data: 17, category: "미세먼지", condition: "좋음")
+                    ConditionCard(
+                      data: (data[index]).toString(),
+                      category: airCategoryKo[index],
+                      condition: airStateList[index],
+                    )
                   ],
                 );
               },

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class ConditionCard extends ConsumerWidget {
-  final int data;
+  final String data;
   final String category, condition;
 
   const ConditionCard({
@@ -29,7 +29,7 @@ class ConditionCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                data.toString(),
+                data,
                 style: TextStyle(
                   color: bgColorState,
                   fontSize: 16,

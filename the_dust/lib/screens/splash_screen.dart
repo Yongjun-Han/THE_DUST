@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:the_dust/calc/gps2grid.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/calc/pm10color.dart';
 import 'package:the_dust/const/data/data.dart';
 import 'package:the_dust/layouts/default_layout.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -24,6 +26,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   final Dio dio = Dio();
   final storage = const FlutterSecureStorage();
+  final List<String> stationNameList = [];
   final List gps = [];
   final dataBundle = {};
 
@@ -51,7 +54,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   // HomeScreen 에 넘겨줄 기온
   Future<void> getGrid() async {
-    final List xygrid = [];
     final lat = await storage.read(key: LAT);
     final lng = await storage.read(key: LNG);
     final int xgrid =
@@ -92,68 +94,132 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       final tmY = value.result['posY'];
       final res = station.getNearStation(tmX: tmX!, tmY: tmY!);
       return res;
-    }).then((value) {
-      //홈으로 넘겨줄 미세먼지 측정 관측소 이름
-      dataBundle['station'] = value.response['body']['items'][0]['stationName'];
-      // print(value.response['body']['items'][0]['stationName']);
-      final station = value.response['body']['items'][0]['stationName'];
+    }).then((value) async {
+      //관측소 이름 리스트
+
+      final List<dynamic> airConditionList = [];
       final Tm2NearStation condition;
       condition = Tm2NearStation(dio);
-      final res = condition.getAirCondition(stationName: station);
-      return res;
-    }).then((value) {
-      // final List<AirColorModel> airColorState = ref.watch(airColorProvider);
-      final pm10level = int.parse(
-        value.response['body']['items'][0]['pm10Value'],
-      );
-      // const pm10level = 60;
-      // final pm25level = int.parse(
-      //   value.response['body']['items'][0]['pm25Value'],
-      // );
-      // print(value.response['body']['items'][0]);
-      //홈으로 넘겨줄 미세먼지 측정 데이터
-      dataBundle['dust'] = value.response['body']['items'][0];
-      if (pm10level <= 30) {
-        ref.read(pm10ColorProvider.notifier).update((state) => GOOD);
-      } else if (pm10level > 30 && pm10level <= 48) {
-        ref.read(pm10ColorProvider.notifier).update((state) => NICE);
-        ref
-            .read(emojiProvider.notifier)
-            .update((state) => "lib/assets/image/NICE.png");
-        ref.read(dustMessageProvider.notifier).update((state) => "양호");
-      } else if (pm10level > 48 && pm10level <= 65) {
-        ref.read(pm10ColorProvider.notifier).update((state) => MODERATE);
-        ref
-            .read(emojiProvider.notifier)
-            .update((state) => "lib/assets/image/MODERATE.png");
-        ref.read(dustMessageProvider.notifier).update((state) => "보통");
-      } else if (pm10level > 65 && pm10level <= 99) {
-        ref.read(pm10ColorProvider.notifier).update((state) => UNHEALTHY);
-        ref
-            .read(emojiProvider.notifier)
-            .update((state) => "lib/assets/image/UNHEALTHY.png");
-        ref.read(dustMessageProvider.notifier).update((state) => "나쁨");
-      } else if (pm10level > 99 && pm10level <= 150) {
-        ref.read(pm10ColorProvider.notifier).update((state) => VERY_UNHEALTHY);
-        ref
-            .read(emojiProvider.notifier)
-            .update((state) => "lib/assets/image/VERY_UNHEALTHY.png");
-        ref.read(dustMessageProvider.notifier).update((state) => "상당히 나쁨");
-      } else if (pm10level > 150) {
-        ref.read(pm10ColorProvider.notifier).update((state) => HAZARDOUS);
-        ref
-            .read(emojiProvider.notifier)
-            .update((state) => "lib/assets/image/HAZARDOUS.png");
-        ref.read(dustMessageProvider.notifier).update((state) => "매우나쁨");
+      for (int i = 0; i < value.response['body']['items'].length; i++) {
+        stationNameList.add(
+          value.response['body']['items'][i]['stationName'],
+        );
+        final res = await condition.getAirCondition(
+            stationName: value.response['body']['items'][i]['stationName']);
+        airConditionList.add(res.response['body']['items']);
       }
+      // //홈으로 넘겨줄 미세먼지 측정 관측소 3곳 이름
+      // dataBundle['station'] = stationNameList;
+      //홈으로 넘겨줄 미세먼지 측정 데이터
+      // dataBundle['airConditionList'] = airConditionList;
+      return airConditionList;
+    }).then((value) {
+      final List<String> stationList = [];
+      final List<dynamic> airDataList = [];
+      final int pm10;
+
+      if (value[0][0]['pm10Value'] == null) {
+        pm10 = int.parse(value[0][1]['pm10Value']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['pm10Value'] == null &&
+          value[0][1]['pm10Value'] == null) {
+        pm10 = int.parse(value[0][2]['pm10Value']);
+        stationList.add(stationNameList[2]);
+      } else {
+        pm10 = int.parse(value[0][0]['pm10Value']);
+        stationList.add(stationNameList[0]);
+      }
+      airDataList.add(pm10);
+
+      final int pm25;
+      if (value[0][0]['pm25Value'] == null) {
+        pm25 = int.parse(value[0][1]['pm25Value']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['pm25Value'] == null &&
+          value[0][1]['pm25Value'] == null) {
+        pm25 = int.parse(value[0][2]['pm25Value']);
+        stationList.add(stationNameList[2]);
+      } else {
+        pm25 = int.parse(value[0][0]['pm25Value']);
+        stationList.add(stationNameList[0]);
+      }
+      airDataList.add(pm25);
+
+      final double o3;
+      if (value[0][0]['o3Value'] == null) {
+        o3 = double.parse(value[0][1]['o3Value']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['o3Value'] == null &&
+          value[0][1]['o3Value'] == null) {
+        o3 = double.parse(value[0][2]['o3Value']);
+        stationList.add(stationNameList[2]);
+      } else {
+        o3 = double.parse(value[0][0]['o3Value']);
+        stationList.add(stationNameList[0]);
+      }
+
+      airDataList.add(o3);
+
+      final double no2;
+      if (value[0][0]['no2Value'] == null) {
+        no2 = double.parse(value[0][1]['no2Value']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['no2Value'] == null &&
+          value[0][1]['no2Value'] == null) {
+        no2 = double.parse(value[0][2]['no2Value']);
+        stationList.add(stationNameList[2]);
+      } else {
+        no2 = double.parse(value[0][0]['no2Value']);
+        stationList.add(stationNameList[0]);
+      }
+      airDataList.add(no2);
+
+      final double so2;
+      if (value[0][0]['so2Value'] == null) {
+        so2 = double.parse(value[0][1]['so2Value']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['so2Value'] == null &&
+          value[0][1]['so2Value'] == null) {
+        so2 = double.parse(value[0][2]['so2Value']);
+        stationList.add(stationNameList[2]);
+      } else {
+        so2 = double.parse(value[0][0]['so2Value']);
+        stationList.add(stationNameList[0]);
+      }
+
+      airDataList.add(so2);
+
+      final double co;
+      if (value[0][0]['coValue'] == null) {
+        co = double.parse(value[0][1]['coValue']);
+        stationList.add(stationNameList[1]);
+      } else if (value[0][0]['coValue'] == null &&
+          value[0][1]['coValue'] == null) {
+        co = double.parse(value[0][2]['coValue']);
+        stationList.add(stationNameList[2]);
+      } else {
+        co = double.parse(value[0][0]['coValue']);
+        stationList.add(stationNameList[0]);
+      }
+      airDataList.add(co);
+      dataBundle['data'] = airDataList;
+      dataBundle['station'] = stationList;
+      //PM10 미세먼지 색상
+      DustColor.pm10Calc(pm10, ref);
+      DustColor.pm25Calc(pm25, ref);
+      DustColor.o3Calc(o3, ref);
+      DustColor.no2Calc(no2, ref);
+      DustColor.so2Calc(so2, ref);
+      DustColor.coCalc(co, ref);
     }).then((value) async {
       await getAddress();
     }).then((value) {
+      final Color bgColor = ref.watch(pm10ColorProvider);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => HomeScreen(
             data: dataBundle,
-            bgColor: GOOD,
+            bgColor: bgColor,
           ),
         ),
       );

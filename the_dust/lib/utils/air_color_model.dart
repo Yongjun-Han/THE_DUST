@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 
-class AirColorModel {
+class AirStatusrModel {
   final int level;
+  final String status, nameKo, nameEn;
   final Color color;
-  final bool isSelected;
+  final bool isMain;
 
-  AirColorModel({
+  AirStatusrModel({
+    required this.nameKo,
+    required this.nameEn,
     required this.color,
+    required this.status,
     required this.level,
-    required this.isSelected,
+    required this.isMain,
   });
 
-  AirColorModel copyWith({
+  AirStatusrModel copyWith({
     int? level,
     Color? color,
-    bool? isSelected,
+    String? status,
+    bool? isMain,
+    String? nameKo,
+    String? nameEn,
   }) {
-    return AirColorModel(
+    return AirStatusrModel(
+      status: status ?? this.status,
+      nameKo: nameKo ?? this.nameKo,
+      nameEn: nameEn ?? this.nameEn,
       level: level ?? this.level,
       color: color ?? this.color,
-      isSelected: isSelected ?? this.isSelected,
+      isMain: isMain ?? this.isMain,
     );
   }
 }

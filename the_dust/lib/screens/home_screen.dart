@@ -31,11 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // print(widget.bgColor);
-    // print(widget.data['userSi']);
-    // print(widget.data['userDong']);
-    // print(widget.data['station']);
-    print(widget.data['dust']);
+    print(widget.data);
     // controller = TabController(length: 2, vsync: this);
     // controller.addListener(tabListner);
   }
@@ -54,20 +50,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<String> getTemp() async {
     DateTime dt = DateTime.now();
-    // final String today = DateFormat.EEEE().format(dt);
-    // print(today);
+    final int today;
+    if (dt.month < 10) {
+      today = int.parse("${dt.year}0${dt.month}${dt.day}");
+    } else {
+      today = int.parse("${dt.year}${dt.month}${dt.day}");
+    }
+
     final int time;
     if (dt.minute <= 40) {
       time = int.parse("${dt.hour - 1}00");
-      print(time);
     } else {
       time = int.parse("${dt.hour}00");
-      print(time);
     }
     final GetTemp temp;
     temp = GetTemp(dio);
     final res = await temp.getTemp(
-      date: 20230707,
+      date: today,
       time: time,
       nx: widget.data['xgrid'],
       ny: widget.data['ygrid'],
@@ -81,7 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final Color pm10ColorState = ref.watch(pm10ColorProvider);
     final String emojiPath = ref.watch(emojiProvider);
-    final String dustMessage = ref.watch(dustMessageProvider);
+    final String dustMessage = ref.watch(pm10MessageProvider);
     DateTime dt = DateTime.now();
     final String dayOfWeek = DateFormat.EEEE('ko').format(dt).substring(0, 1);
     // print(DateFormat.EEEE('ko').format(dt));
@@ -212,7 +211,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: 36,
               ),
-              const AirCondition(),
+              AirCondition(
+                data: widget.data['data'],
+              ),
               const SizedBox(
                 height: 24,
               ),
