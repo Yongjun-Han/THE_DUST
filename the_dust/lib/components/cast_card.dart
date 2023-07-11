@@ -31,7 +31,7 @@ class CastCard extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),

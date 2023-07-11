@@ -26,6 +26,15 @@ Map<String, dynamic> _$AirConditionModelToJson(AirConditionModel instance) =>
       'response': instance.response,
     };
 
+AirCastModel _$AirCastModelFromJson(Map<String, dynamic> json) => AirCastModel(
+      response: json['response'] as Map<String, dynamic>,
+    );
+
+Map<String, dynamic> _$AirCastModelToJson(AirCastModel instance) =>
+    <String, dynamic>{
+      'response': instance.response,
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -90,6 +99,29 @@ class _Tm2NearStation implements Tm2NearStation {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AirConditionModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AirCastModel> getCast({required searchDate}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AirCastModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/ArpltnInforInqireSvc/getMinuDustFrcstDspth?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr%2F8ak3zBXUPHau8gPpxRkoWLURTNOt%2FPPKYm5g9KrCGbVs1ohAw%3D%3D&returnType=json&numOfRows=100&pageNo=1&searchDate=${searchDate}&InformCode=PM10',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AirCastModel.fromJson(_result.data!);
     return value;
   }
 

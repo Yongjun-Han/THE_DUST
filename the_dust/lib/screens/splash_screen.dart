@@ -56,6 +56,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> getGrid() async {
     final lat = await storage.read(key: LAT);
     final lng = await storage.read(key: LNG);
+
+    // const lat = "36.343459";
+    // const lng = "127.392446";
     final int xgrid =
         Gps2Grid.gpsToGRID(double.parse(lat!), double.parse(lng!))['x'];
 

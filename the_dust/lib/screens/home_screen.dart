@@ -97,7 +97,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onTap: () {
             print("MENU");
           },
-          child: const Icon(Icons.notes_sharp),
+          child: const Icon(
+            Icons.notes_sharp,
+            size: 24,
+          ),
         ),
         actions: const [
           Padding(
@@ -105,6 +108,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Icon(
               CupertinoIcons.search,
               color: Colors.black,
+              size: 22,
             ),
           ),
           Padding(
@@ -112,6 +116,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Icon(
               CupertinoIcons.location_fill,
               color: Colors.black,
+              size: 22,
             ),
           ),
         ],
@@ -219,7 +224,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const AirCast(),
               const SizedBox(
-                height: 24,
+                height: 18,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
@@ -240,12 +245,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Text(
                       "한국환경공단과 기상청에서 제공하는 실시간 관측 데이터이며, 관측기관의 사정에 따라 실제 대기환경과 다를 수 있습니다.",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 10,
                         color: Colors.black38,
                       ),
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 12,
               )
             ],
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class ConditionCard extends ConsumerWidget {
   final String data;
@@ -17,8 +16,6 @@ class ConditionCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Color bgColorState = ref.watch(pm10ColorProvider);
-
     return ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
