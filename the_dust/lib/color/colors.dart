@@ -9,7 +9,7 @@ const UNHEALTHY = Color(0xffF28434);
 const VERY_UNHEALTHY = Color(0xffB15437);
 const HAZARDOUS = Color(0xff892828);
 
-
+const BASIC_MODAL = Color.fromARGB(255, 22, 22, 22);
 //텍스트
 // const TEXT_DIMMED = Color.fromARGB(255, 190, 190, 190);
 // const TEXT_INPUT_COLOR = Color(0xffF3F3F3);

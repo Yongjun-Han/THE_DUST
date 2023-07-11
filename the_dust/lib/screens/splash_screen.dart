@@ -105,7 +105,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       condition = Tm2NearStation(dio);
       for (int i = 0; i < value.response['body']['items'].length; i++) {
         stationNameList.add(
-          value.response['body']['items'][i]['stationName'],
+          value.response['body']['items'][i]['addr'],
         );
         final res = await condition.getAirCondition(
             stationName: value.response['body']['items'][i]['stationName']);

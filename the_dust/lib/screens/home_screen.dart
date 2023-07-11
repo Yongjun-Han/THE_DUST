@@ -71,8 +71,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       nx: widget.data['xgrid'],
       ny: widget.data['ygrid'],
     );
-    final temperature = res.response['body']['items']['item'][3]['obsrValue'];
-    // print(res.response['body']['items']['item'][3]['obsrValue']);
+    final String temperature;
+    if (res.response is String) {
+      temperature = "오류";
+    } else {
+      temperature = res.response['body']['items']['item'][3]['obsrValue'];
+    }
+
+    print(res.response['body']['items']['item'][3]['obsrValue']);
     return temperature;
   }
 
@@ -95,7 +101,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         foregroundColor: Colors.black,
         leading: GestureDetector(
           onTap: () {
-            print("MENU");
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const SizedBox(
+                    // height: MediaQuery.of(context).size.height,
+                    child: Text("DDD"),
+                  );
+                });
           },
           child: const Icon(
             Icons.notes_sharp,
@@ -179,7 +192,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Shimmer.fromColors(
-                          baseColor: pm10ColorState,
+                          baseColor: Colors.black26,
                           highlightColor: Colors.black38,
                           child: Container(
                             height: 18,
@@ -217,6 +230,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: 36,
               ),
               AirCondition(
+                station: widget.data['station'],
                 data: widget.data['data'],
               ),
               const SizedBox(

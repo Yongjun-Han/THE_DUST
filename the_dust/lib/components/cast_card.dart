@@ -19,7 +19,7 @@ class CastCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: Colors.black,
-          width: 3,
+          width: 2,
         ),
       ),
       child: Padding(
@@ -31,7 +31,7 @@ class CastCard extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),

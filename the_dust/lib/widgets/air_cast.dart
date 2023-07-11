@@ -18,7 +18,12 @@ class AirCast extends StatelessWidget {
     }
     final Tm2NearStation cast;
     cast = Tm2NearStation(dio);
+
     final res = cast.getCast(searchDate: today).then((value) {
+      // print(value.response);
+      // if (value.response is String) {
+      //   return null;
+      // } else {
       returnData['castTimeToday'] =
           value.response['body']['items'][0]['dataTime'];
       returnData['castMsgToday'] =
@@ -28,6 +33,7 @@ class AirCast extends StatelessWidget {
       returnData['castMsgTomorrow'] =
           value.response['body']['items'][1]['informCause'];
       return returnData;
+      // }
     }).then((value) => value);
     return res;
   }
@@ -42,7 +48,7 @@ class AirCast extends StatelessWidget {
             future: getCastInfo(),
             builder: (context, snapshot) {
               final item = snapshot.data;
-              print(item);
+              // print(item);
               if (!snapshot.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,7 +88,7 @@ class AirCast extends StatelessWidget {
                     ),
                     const CastCard(
                       title: "내일",
-                      message: "데이터를 가져오는 중입니다",
+                      message: "데이터를 가져오고 있어요",
                     ),
                   ],
                 );
@@ -103,19 +109,33 @@ class AirCast extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          item!['castTimeToday'],
-                          style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black26),
-                        ),
+                        if (item!['castTimeToday'] == null)
+                          const Text(
+                            "데이터 측정에 문제가 있어요",
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black26),
+                          ),
+                        if (item['castTimeToday'] != null)
+                          Text(
+                            item['castTimeToday'],
+                            style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black26),
+                          ),
                       ],
                     ),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
+                  if (item['castMsgToday'] == null)
+                    const CastCard(
+                      title: "오늘",
+                      message: "일일 트래픽 초과",
+                    ),
                   CastCard(
                     title: "오늘",
                     message: item['castMsgToday']
@@ -125,6 +145,11 @@ class AirCast extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
+                  if (item['castMsgTomorrow'] == null)
+                    const CastCard(
+                      title: "내일",
+                      message: "일일 트래픽 초과",
+                    ),
                   CastCard(
                     title: "내일",
                     message: item['castMsgTomorrow']

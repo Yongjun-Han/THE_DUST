@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/color/colors.dart';
 import 'package:the_dust/components/condition_card.dart';
+import 'package:the_dust/components/station_card.dart';
 import 'package:the_dust/const/data/data.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class AirCondition extends ConsumerWidget {
+  final List<dynamic> station;
   final List<dynamic> data;
 
   const AirCondition({
+    required this.station,
     required this.data,
     super.key,
   });
@@ -69,29 +72,92 @@ class AirCondition extends ConsumerWidget {
       so2Color,
       coColor,
     ];
+    // print(station);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "대기질 정보",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "대기질 정보",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    backgroundColor: BASIC_MODAL,
+                    context: context,
+                    builder: (BuildContext context) {
+                      final List<String> category = [
+                        "미세먼지",
+                        "초미세먼지",
+                        "오존",
+                        "이산화질소",
+                        "아황산가스",
+                        "일산화탄소",
+                      ];
+                      return SizedBox(
+                        height: 380,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 24, horizontal: 18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "대기질 측정소 세부 정보",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Column(
+                                  children: [
+                                    StationCard(
+                                      station: station[0],
+                                      category: category[0],
+                                    ),
+                                    StationCard(
+                                      station: station[1],
+                                      category: category[1],
+                                    ),
+                                    StationCard(
+                                      station: station[2],
+                                      category: category[2],
+                                    ),
+                                    StationCard(
+                                      station: station[3],
+                                      category: category[3],
+                                    ),
+                                    StationCard(
+                                      station: station[4],
+                                      category: category[4],
+                                    ),
+                                    StationCard(
+                                      station: station[5],
+                                      category: category[5],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
+                      );
+                    },
+                  );
+                  // print(station);
+                },
+                child: const Icon(Icons.info_outline),
+              )
             ],
           ),
           const SizedBox(
