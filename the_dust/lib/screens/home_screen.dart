@@ -26,12 +26,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int index = 0;
-  final Dio dio = Dio();
 
   @override
   void initState() {
     super.initState();
     print(widget.data);
+    //  SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    //   final state = ref.watch(isGetCastProvider);
+    //   if (state == false) {
+    //     print(state);
+    //   }
+    // });
     // controller = TabController(length: 2, vsync: this);
     // controller.addListener(tabListner);
   }
@@ -49,6 +54,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   // }
 
   Future<String> getTemp() async {
+    final Dio dio = Dio();
+    // dio.interceptors.add(CustomInterceptor());
     DateTime dt = DateTime.now();
     final int today;
     if (dt.month < 10) {
@@ -73,12 +80,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
     final String temperature;
     if (res.response is String) {
-      temperature = "오류";
+      temperature = "온도";
     } else {
       temperature = res.response['body']['items']['item'][3]['obsrValue'];
     }
 
-    print(res.response['body']['items']['item'][3]['obsrValue']);
+    // print("SPLASH $temperature");
     return temperature;
   }
 
@@ -87,6 +94,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final Color pm10ColorState = ref.watch(pm10ColorProvider);
     final String emojiPath = ref.watch(emojiProvider);
     final String dustMessage = ref.watch(pm10MessageProvider);
+    final castState = ref.watch(isGetCastProvider);
+
     DateTime dt = DateTime.now();
     final String dayOfWeek = DateFormat.EEEE('ko').format(dt).substring(0, 1);
     // print(DateFormat.EEEE('ko').format(dt));
@@ -274,5 +283,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void showError() {
+    showDialog(
+        context: context,
+        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            //Dialog Main Title
+            title: const Column(
+              children: <Widget>[
+                Text("Dialog Title"),
+              ],
+            ),
+            //
+            content: const Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Dialog Content",
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("확인"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

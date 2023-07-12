@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/const/color/colors.dart';
 
 //미세먼지 수치  배경색용
 final pm10ColorProvider = StateProvider<Color>((ref) => GOOD);
@@ -39,3 +39,5 @@ final coMessageProvider = StateProvider<String>((ref) => "좋음");
 
 final emojiProvider =
     StateProvider<String>((ref) => "lib/assets/image/GOOD.png");
+
+final isGetCastProvider = StateProvider<bool>((ref) => true);

@@ -1,6 +1,11 @@
 const LAT = 'LAT';
 const LNG = 'LNG';
-const accessToken = "ACCESS_TOKEN";
+
+const SAVEDATA = "SAVEDATA";
+const CASTDATA = "CASTDATA";
+const TEMPDATA = "TEMPDATA";
+
+const String accessToken = "ACCESS_TOKEN";
 
 // const storage = FlutterSecureStorage();
 final List<String> airCategoryKo = [

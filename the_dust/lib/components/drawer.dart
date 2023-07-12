@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/const/color/colors.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class MainDrawer extends ConsumerWidget {

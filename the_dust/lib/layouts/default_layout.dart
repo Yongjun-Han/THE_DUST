@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/const/color/colors.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Widget child;

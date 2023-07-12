@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/const/color/colors.dart';
 import 'package:the_dust/utils/air_color_model.dart';
 
 class AirStatusListNotifier extends StateNotifier<List<AirStatusrModel>> {

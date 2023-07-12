@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_dust/color/colors.dart';
+import 'package:the_dust/const/color/colors.dart';
 import 'package:the_dust/components/condition_card.dart';
 import 'package:the_dust/components/station_card.dart';
 import 'package:the_dust/const/data/data.dart';
