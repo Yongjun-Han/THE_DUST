@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/const/color/colors.dart';
-import 'package:the_dust/utils/air_condition_notifier.dart';
 
 class MainDrawer extends ConsumerWidget {
   final String today;
@@ -12,7 +11,6 @@ class MainDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorState = ref.watch(pm10ColorProvider);
     return Drawer(
       child: Container(
         color: BASIC_MODAL,

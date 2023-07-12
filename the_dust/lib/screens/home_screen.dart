@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:the_dust/const/color/colors.dart';
 import 'package:the_dust/models/get_temp.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
 import 'package:the_dust/widgets/air_cast.dart';
@@ -31,11 +32,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     print(widget.data);
-    //  SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    //   final state = ref.watch(isGetCastProvider);
-    //   if (state == false) {
-    //     print(state);
-    //   }
+    //시작과 동시에
+    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    //   showError();
     // });
     // controller = TabController(length: 2, vsync: this);
     // controller.addListener(tabListner);
@@ -79,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ny: widget.data['ygrid'],
     );
     final String temperature;
-    if (res.response is String) {
+    if (res.response['body'] == null) {
       temperature = "온도";
     } else {
       temperature = res.response['body']['items']['item'][3]['obsrValue'];
@@ -92,15 +91,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Color pm10ColorState = ref.watch(pm10ColorProvider);
+    final Color pm25ColorState = ref.watch(pm25ColorProvider);
     final String emojiPath = ref.watch(emojiProvider);
     final String dustMessage = ref.watch(pm10MessageProvider);
-    final castState = ref.watch(isGetCastProvider);
+    final pmColorState = ref.watch(isPm10Color);
 
     DateTime dt = DateTime.now();
     final String dayOfWeek = DateFormat.EEEE('ko').format(dt).substring(0, 1);
     // print(DateFormat.EEEE('ko').format(dt));
     return Scaffold(
-      backgroundColor: pm10ColorState,
+      backgroundColor: pmColorState ? pm10ColorState : pm25ColorState,
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -111,11 +111,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         leading: GestureDetector(
           onTap: () {
             showModalBottomSheet(
+                backgroundColor: Colors.transparent,
                 context: context,
                 builder: (BuildContext context) {
-                  return const SizedBox(
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    decoration: const BoxDecoration(
+                      color: BASIC_MODAL,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                      ),
+                    ),
                     // height: MediaQuery.of(context).size.height,
-                    child: Text("DDD"),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        children: [Text("Dust.D")],
+                      ),
+                    ),
                   );
                 });
           },

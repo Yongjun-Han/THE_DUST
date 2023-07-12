@@ -121,6 +121,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //pm10 미세먼지 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final int pm10;
+
       if (value[0][0]['pm10Value'] == null) {
         pm10 = int.parse(value[0][1]['pm10Value']);
         stationList.add(stationNameList[1]);
@@ -133,12 +134,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(pm10);
+      print(pm10);
 
       //pm25 초미세먼지 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final int pm25;
       if (value[0][0]['pm25Value'] == null) {
         pm25 = int.parse(value[0][1]['pm25Value']);
         stationList.add(stationNameList[1]);
+        print("여기옴?");
       } else if (value[0][0]['pm25Value'] == null &&
           value[0][1]['pm25Value'] == null) {
         pm25 = int.parse(value[0][2]['pm25Value']);
@@ -148,6 +151,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(pm25);
+      print(pm25);
 
       //o3 오존 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double o3;
@@ -163,6 +167,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(o3);
+      print(o3);
 
       //no2 이산화질소 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double no2;
@@ -178,6 +183,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(no2);
+      print(no2);
 
       //so2 아황산가스 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double so2;
@@ -193,6 +199,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(so2);
+      print(so2);
 
       //co 일산화탄소 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double co;
@@ -208,6 +215,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         stationList.add(stationNameList[0]);
       }
       airDataList.add(co);
+      print(co);
+
       //home에 넘겨줄 데이터에 측정데이터값과 측정소 각각의 주소를 넣어준다
       dataBundle['data'] = airDataList;
       dataBundle['station'] = stationList;

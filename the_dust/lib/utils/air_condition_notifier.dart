@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_dust/const/color/colors.dart';
 
+final isPm10Color = StateProvider<bool>((ref) => true);
+
 //미세먼지 수치  배경색용
 final pm10ColorProvider = StateProvider<Color>((ref) => GOOD);
 //미세먼지 수치 문구
