@@ -17,9 +17,7 @@ class StationCard extends StatelessWidget {
         Text(
           category,
           style: const TextStyle(
-              color: Color.fromARGB(255, 189, 189, 189),
-              fontWeight: FontWeight.w600,
-              fontSize: 14),
+              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
         ),
         const SizedBox(
           height: 6,

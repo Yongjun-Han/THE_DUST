@@ -42,4 +42,6 @@ final coMessageProvider = StateProvider<String>((ref) => "좋음");
 final emojiProvider =
     StateProvider<String>((ref) => "lib/assets/image/GOOD.png");
 
+final isMessagePm10Provider = StateProvider<bool>((ref) => true);
+
 final isGetCastProvider = StateProvider<bool>((ref) => true);
