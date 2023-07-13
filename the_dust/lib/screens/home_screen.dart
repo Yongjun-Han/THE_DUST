@@ -146,7 +146,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
@@ -296,64 +295,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           "일산화탄소",
         ];
         return SizedBox(
-          height: 400,
+          height: MediaQuery.of(context).size.height * 0.5,
           child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      width: 40,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff5B5B5B),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Container(
+                        width: 40,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff5B5B5B),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Text(
+                      "대기질 측정소 세부 정보",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Column(
+                      children: [
+                        StationCard(
+                          station: station[0],
+                          category: category[0],
+                        ),
+                        StationCard(
+                          station: station[1],
+                          category: category[1],
+                        ),
+                        StationCard(
+                          station: station[2],
+                          category: category[2],
+                        ),
+                        StationCard(
+                          station: station[3],
+                          category: category[3],
+                        ),
+                        StationCard(
+                          station: station[4],
+                          category: category[4],
+                        ),
+                        StationCard(
+                          station: station[5],
+                          category: category[5],
+                        ),
+                      ],
                     )
-                  ]),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  const Text(
-                    "대기질 측정소 세부 정보",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Column(
-                    children: [
-                      StationCard(
-                        station: station[0],
-                        category: category[0],
-                      ),
-                      StationCard(
-                        station: station[1],
-                        category: category[1],
-                      ),
-                      StationCard(
-                        station: station[2],
-                        category: category[2],
-                      ),
-                      StationCard(
-                        station: station[3],
-                        category: category[3],
-                      ),
-                      StationCard(
-                        station: station[4],
-                        category: category[4],
-                      ),
-                      StationCard(
-                        station: station[5],
-                        category: category[5],
-                      ),
-                    ],
-                  )
-                ],
+                  ],
+                ),
               )),
         );
       },
