@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -129,7 +130,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   modal(context);
                   // print(station);
                 },
-                child: const Icon(Icons.info_outline),
+                child: const Icon(
+                  CupertinoIcons.info,
+                  size: 22,
+                ),
               )),
         ],
         title: Column(

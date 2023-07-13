@@ -33,9 +33,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentPosition()
-        .then((value) => getGrid())
-        .then((value) => getAuthToken());
+    getCurrentPosition().then((value) => getGrid());
+    getAuthToken();
   }
 
   Future<void> getCurrentPosition() async {
@@ -78,6 +77,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         .getAuthToken(
             key: "d7fb11be307f45dcbaa6", secret: "56b1d86baff049ae866a")
         .then((value) async {
+      print(value.result);
       await storage.write(key: accessToken, value: value.result['accessToken']);
       //GPS 를 TM 좌표값으로 변환
       final lat = await storage.read(key: LAT);
