@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:the_dust/components/station_card.dart';
+import 'package:the_dust/const/color/colors.dart';
 import 'package:the_dust/layouts/drawer.dart';
 import 'package:the_dust/models/get_temp.dart';
 import 'package:the_dust/utils/air_condition_notifier.dart';
@@ -120,23 +121,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             size: 24,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              CupertinoIcons.search,
-              color: Colors.black,
-              size: 22,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 18),
-            child: Icon(
-              CupertinoIcons.location_fill,
-              color: Colors.black,
-              size: 22,
-            ),
-          ),
+              padding: const EdgeInsets.only(right: 16),
+              child: GestureDetector(
+                onTap: () {
+                  modal(context);
+                  // print(station);
+                },
+                child: const Icon(Icons.info_outline),
+              )),
         ],
         title: Column(
           children: [
@@ -242,7 +236,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               height: 36,
             ),
             AirCondition(
-              station: widget.data['station'],
               data: widget.data['data'],
             ),
             const SizedBox(
@@ -284,6 +277,86 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> modal(BuildContext context) {
+    final List<dynamic> station = widget.data['station'];
+
+    return showModalBottomSheet(
+      backgroundColor: BASIC_MODAL,
+      context: context,
+      builder: (BuildContext context) {
+        final List<String> category = [
+          "미세먼지",
+          "초미세먼지",
+          "오존",
+          "이산화질소",
+          "아황산가스",
+          "일산화탄소",
+        ];
+        return SizedBox(
+          height: 400,
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Container(
+                      width: 40,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff5B5B5B),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                  ]),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  const Text(
+                    "대기질 측정소 세부 정보",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Column(
+                    children: [
+                      StationCard(
+                        station: station[0],
+                        category: category[0],
+                      ),
+                      StationCard(
+                        station: station[1],
+                        category: category[1],
+                      ),
+                      StationCard(
+                        station: station[2],
+                        category: category[2],
+                      ),
+                      StationCard(
+                        station: station[3],
+                        category: category[3],
+                      ),
+                      StationCard(
+                        station: station[4],
+                        category: category[4],
+                      ),
+                      StationCard(
+                        station: station[5],
+                        category: category[5],
+                      ),
+                    ],
+                  )
+                ],
+              )),
+        );
+      },
     );
   }
 }
