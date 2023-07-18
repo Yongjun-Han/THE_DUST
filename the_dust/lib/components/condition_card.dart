@@ -52,7 +52,7 @@ class ConditionCard extends ConsumerWidget {
               Text(
                 condition,
                 style: TextStyle(
-                  color: colors,
+                  color: condition == "측정소 점검중" ? Colors.amber : colors,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),

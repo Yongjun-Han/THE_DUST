@@ -115,6 +115,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       //3곳의 관측데이터를 리스트에 담은 후 반환
       return airConditionList;
     }).then((value) {
+      print(value[0]);
       //home에 넘겨줄 각 항목별 측정소 주소 리스트
       final List<String> stationList = [];
       //home에 넘겨줄 각 항목별 측정 데이터

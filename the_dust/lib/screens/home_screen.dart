@@ -218,20 +218,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Text(
                   pmColorState ? "미세먼지" : "초미세먼지",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: pm10Msg == "측정소 점검중" || pm25msg == "측정소 점검중"
+                          ? Colors.amber
+                          : Colors.black),
                 ),
                 const SizedBox(
                   width: 6,
                 ),
                 Text(
                   dustMessage ? pm10Msg : pm25msg,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: pm10Msg == "측정소 점검중" || pm25msg == "측정소 점검중"
+                          ? Colors.amber
+                          : Colors.black),
                 ),
               ],
             ),
