@@ -100,3 +100,5 @@ flutter:
   - lib/assets/image/UNHEALTHY.png
   - lib/assets/image/VERY_UNHEALTHY.png
   - lib/assets/image/HAZARDOUS.png
+  - lib/assets/image/SAD.png
+  - lib/assets/image/FIXING.png

@@ -8,5 +8,6 @@ const MODERATE = Color(0xffFAE665);
 const UNHEALTHY = Color(0xffF28434);
 const VERY_UNHEALTHY = Color(0xffB15437);
 const HAZARDOUS = Color(0xff892828);
+const EMPTY = Color.fromARGB(255, 161, 161, 161);
 
 const BASIC_MODAL = Color.fromARGB(255, 22, 22, 22);

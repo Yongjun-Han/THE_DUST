@@ -33,8 +33,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentPosition().then((value) => getGrid());
+    getCurrentPosition();
+    getGrid();
     getAuthToken();
+    // getAuthToken();
   }
 
   Future<void> getCurrentPosition() async {
@@ -77,7 +79,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         .getAuthToken(
             key: "d7fb11be307f45dcbaa6", secret: "56b1d86baff049ae866a")
         .then((value) async {
-      print(value.result);
       await storage.write(key: accessToken, value: value.result['accessToken']);
       //GPS 를 TM 좌표값으로 변환
       final lat = await storage.read(key: LAT);
@@ -89,7 +90,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           posY: double.parse(lat!));
       return res;
     }).then((value) async {
-      // print(value.result);
       final Tm2NearStation station;
       station = Tm2NearStation(dio);
       //변환한 TM 좌표로 근첩측정소 조회
@@ -122,14 +122,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       //pm10 미세먼지 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final int pm10;
 
-      if (value[0][0]['pm10Value'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['pm10Value'] == "-" && value[0][1]['pm10Value'] != "-") {
         pm10 = int.parse(value[0][1]['pm10Value']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['pm10Value'] == null &&
-          value[0][1]['pm10Value'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['pm10Value'] == "-" &&
+          value[0][1]['pm10Value'] == "-" &&
+          value[0][2]['pm10Value'] != "-") {
         pm10 = int.parse(value[0][2]['pm10Value']);
         stationList.add(stationNameList[2]);
-      } else {
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['pm10Value'] == "-" &&
+          value[0][1]['pm10Value'] == "-" &&
+          value[0][2]['pm10Value'] == "-") {
+        pm10 = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         pm10 = int.parse(value[0][0]['pm10Value']);
         stationList.add(stationNameList[0]);
       }
@@ -137,15 +147,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //pm25 초미세먼지 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final int pm25;
-      if (value[0][0]['pm25Value'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['pm25Value'] == "-" && value[0][1]['pm25Value'] != "-") {
         pm25 = int.parse(value[0][1]['pm25Value']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['pm25Value'] == null &&
-          value[0][1]['pm25Value'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['pm25Value'] == "-" &&
+          value[0][1]['pm25Value'] == "-" &&
+          value[0][2]['pm25Value'] != "-") {
         pm25 = int.parse(value[0][2]['pm25Value']);
         stationList.add(stationNameList[2]);
-      } else {
-        // pm25 = 40;
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['pm25Value'] == "-" &&
+          value[0][1]['pm25Value'] == "-" &&
+          value[0][2]['pm25Value'] == "-") {
+        pm25 = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         pm25 = int.parse(value[0][0]['pm25Value']);
         stationList.add(stationNameList[0]);
       }
@@ -153,14 +172,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //o3 오존 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double o3;
-      if (value[0][0]['o3Value'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['o3Value'] == "-" && value[0][1]['o3Value'] != "-") {
         o3 = double.parse(value[0][1]['o3Value']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['o3Value'] == null &&
-          value[0][1]['o3Value'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['o3Value'] == "-" &&
+          value[0][1]['o3Value'] == "-" &&
+          value[0][2]['o3Value'] != "-") {
         o3 = double.parse(value[0][2]['o3Value']);
         stationList.add(stationNameList[2]);
-      } else {
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['o3Value'] == "-" &&
+          value[0][1]['o3Value'] == "-" &&
+          value[0][2]['o3Value'] == "-") {
+        o3 = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         o3 = double.parse(value[0][0]['o3Value']);
         stationList.add(stationNameList[0]);
       }
@@ -168,14 +197,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //no2 이산화질소 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double no2;
-      if (value[0][0]['no2Value'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['no2Value'] == "-" && value[0][1]['no2Value'] != "-") {
         no2 = double.parse(value[0][1]['no2Value']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['no2Value'] == null &&
-          value[0][1]['no2Value'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['no2Value'] == "-" &&
+          value[0][1]['no2Value'] == "-" &&
+          value[0][2]['no2Value'] != "-") {
         no2 = double.parse(value[0][2]['no2Value']);
         stationList.add(stationNameList[2]);
-      } else {
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['no2Value'] == "-" &&
+          value[0][1]['no2Value'] == "-" &&
+          value[0][2]['no2Value'] == "-") {
+        no2 = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         no2 = double.parse(value[0][0]['no2Value']);
         stationList.add(stationNameList[0]);
       }
@@ -183,14 +222,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //so2 아황산가스 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double so2;
-      if (value[0][0]['so2Value'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['so2Value'] == "-" && value[0][1]['so2Value'] != "-") {
         so2 = double.parse(value[0][1]['so2Value']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['so2Value'] == null &&
-          value[0][1]['so2Value'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['so2Value'] == "-" &&
+          value[0][1]['so2Value'] == "-" &&
+          value[0][2]['so2Value'] != "-") {
         so2 = double.parse(value[0][2]['so2Value']);
         stationList.add(stationNameList[2]);
-      } else {
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['so2Value'] == "-" &&
+          value[0][1]['so2Value'] == "-" &&
+          value[0][2]['so2Value'] == "-") {
+        so2 = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         so2 = double.parse(value[0][0]['so2Value']);
         stationList.add(stationNameList[0]);
       }
@@ -198,14 +247,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       //co 일산화탄소 : 측정소 3곳중 작동하지 않거나 미수신 되는 경우 다음으로 가까운 측정소의 데이터를 요청
       final double co;
-      if (value[0][0]['coValue'] == null) {
+      //1번이 오류 2번이 오류 아닐시
+      if (value[0][0]['coValue'] == "-" && value[0][1]['coValue'] != "-") {
         co = double.parse(value[0][1]['coValue']);
         stationList.add(stationNameList[1]);
-      } else if (value[0][0]['coValue'] == null &&
-          value[0][1]['coValue'] == null) {
+      } // 1번 2번 모두 오류시
+      else if (value[0][0]['coValue'] == "-" &&
+          value[0][1]['coValue'] == "-" &&
+          value[0][2]['coValue'] != "-") {
         co = double.parse(value[0][2]['coValue']);
         stationList.add(stationNameList[2]);
-      } else {
+      } //1번 2번 3번 모두 오류시
+      else if (value[0][0]['coValue'] == "-" &&
+          value[0][1]['coValue'] == "-" &&
+          value[0][2]['coValue'] == "-") {
+        co = 0;
+        stationList.add("측정소 점검중");
+      } // 1번이 정상일때
+      else {
         co = double.parse(value[0][0]['coValue']);
         stationList.add(stationNameList[0]);
       }
@@ -233,6 +292,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       } else if (pm10Level >= pm25Level) {
         ref.read(isPm10Color.notifier).update((state) => true);
         ref.read(isMessagePm10Provider.notifier).update((state) => true);
+      } else if (pm10Level == 404 && pm25Level != 404) {
+        ref.read(isPm10Color.notifier).update((state) => false);
+        ref.read(isMessagePm10Provider.notifier).update((state) => false);
+      } else if (pm10Level != 404 && pm25Level == 404) {
+        ref.read(isPm10Color.notifier).update((state) => true);
+        ref.read(isMessagePm10Provider.notifier).update((state) => true);
+      } else if (pm10Level == 404 && pm25Level == 404) {
+        ref.read(isPm10Color.notifier).update((state) => true);
+        ref.read(isMessagePm10Provider.notifier).update((state) => true);
       }
 
       if (isPm10 == true) {
@@ -256,6 +324,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           ref
               .read(emojiProvider.notifier)
               .update((state) => "lib/assets/image/HAZARDOUS.png");
+        } else if (pm10Level == 404) {
+          ref
+              .read(emojiProvider.notifier)
+              .update((state) => "lib/assets/image/FIXING.png");
         } else {
           if (pm25Level == 2) {
             ref
@@ -277,6 +349,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ref
                 .read(emojiProvider.notifier)
                 .update((state) => "lib/assets/image/HAZARDOUS.png");
+          } else if (pm25Level == 404) {
+            ref
+                .read(emojiProvider.notifier)
+                .update((state) => "lib/assets/image/FIXING.png");
           }
         }
       }

@@ -333,27 +333,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Column(
                       children: [
                         StationCard(
-                          station: station[0],
+                          station: station.isNotEmpty ? station[0] : "측정소 점검중",
                           category: category[0],
                         ),
                         StationCard(
-                          station: station[1],
+                          station: station.isNotEmpty ? station[1] : "측정소 점검중",
                           category: category[1],
                         ),
                         StationCard(
-                          station: station[2],
+                          station: station.isNotEmpty ? station[2] : "측정소 점검중",
                           category: category[2],
                         ),
                         StationCard(
-                          station: station[3],
+                          station: station.isNotEmpty ? station[3] : "측정소 점검중",
                           category: category[3],
                         ),
                         StationCard(
-                          station: station[4],
+                          station: station.isNotEmpty ? station[4] : "측정소 점검중",
                           category: category[4],
                         ),
                         StationCard(
-                          station: station[5],
+                          station: station.isNotEmpty ? station[5] : "측정소 점검중",
                           category: category[5],
                         ),
                       ],
