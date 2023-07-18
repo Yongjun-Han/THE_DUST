@@ -33,9 +33,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentPosition();
-    getGrid();
-    getAuthToken();
+    getCurrentPosition()
+        .then((value) => getGrid().then((value) => getAuthToken()));
+    // getGrid();
+    // getAuthToken();
     // getAuthToken();
   }
 
