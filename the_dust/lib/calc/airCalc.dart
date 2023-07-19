@@ -32,10 +32,10 @@ class DustColor {
       ref.read(pm10ColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(pm10MessageProvider.notifier).update((state) => "매우나쁨");
       ref.read(pm10LevelProvider.notifier).update((state) => 6);
-    } else if (pm10Value == 0) {
+    } else if (pm10Value == -1) {
       ref.read(pm10ColorProvider.notifier).update((state) => EMPTY);
       ref.read(pm10MessageProvider.notifier).update((state) => "측정소 점검중");
-      ref.read(pm10LevelProvider.notifier).update((state) => 404);
+      ref.read(pm10LevelProvider.notifier).update((state) => -1);
     }
   }
 
@@ -65,10 +65,10 @@ class DustColor {
       ref.read(pm25ColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(pm25MessageProvider.notifier).update((state) => "매우나쁨");
       ref.read(pm25LevelProvider.notifier).update((state) => 6);
-    } else if (pm25Value == 0) {
+    } else if (pm25Value == -1) {
       ref.read(pm25ColorProvider.notifier).update((state) => EMPTY);
       ref.read(pm25MessageProvider.notifier).update((state) => "측정소 점검중");
-      ref.read(pm25LevelProvider.notifier).update((state) => 404);
+      ref.read(pm25LevelProvider.notifier).update((state) => -1);
     }
   }
 
@@ -92,7 +92,7 @@ class DustColor {
     } else if (o3Value > 0.380) {
       ref.read(o3ColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(o3MessageProvider.notifier).update((state) => "매우나쁨");
-    } else if (o3Value == 0) {
+    } else if (o3Value == -1) {
       ref.read(o3ColorProvider.notifier).update((state) => EMPTY);
       ref.read(o3MessageProvider.notifier).update((state) => "측정소 점검중");
     }
@@ -118,7 +118,7 @@ class DustColor {
     } else if (no2Value > 1.1) {
       ref.read(no2ColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(no2MessageProvider.notifier).update((state) => "매우나쁨");
-    } else if (no2Value == 0) {
+    } else if (no2Value == -1) {
       ref.read(no2ColorProvider.notifier).update((state) => EMPTY);
       ref.read(no2MessageProvider.notifier).update((state) => "측정소 점검중");
     }
@@ -144,7 +144,7 @@ class DustColor {
     } else if (so2Value > 0.6) {
       ref.read(so2ColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(so2MessageProvider.notifier).update((state) => "매우나쁨");
-    } else if (so2Value == 0) {
+    } else if (so2Value == -1) {
       ref.read(so2ColorProvider.notifier).update((state) => EMPTY);
       ref.read(so2MessageProvider.notifier).update((state) => "측정소 점검중");
     }
@@ -170,7 +170,7 @@ class DustColor {
     } else if (coValue > 32) {
       ref.read(coColorProvider.notifier).update((state) => HAZARDOUS);
       ref.read(coMessageProvider.notifier).update((state) => "매우나쁨");
-    } else if (coValue == 0) {
+    } else if (coValue == -1) {
       ref.read(coColorProvider.notifier).update((state) => EMPTY);
       ref.read(coMessageProvider.notifier).update((state) => "측정소 점검중");
     }

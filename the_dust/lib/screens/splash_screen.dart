@@ -115,6 +115,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       //3곳의 관측데이터를 리스트에 담은 후 반환
       return airConditionList;
     }).then((value) {
+      print(value[0]);
       //home에 넘겨줄 각 항목별 측정소 주소 리스트
       final List<String> stationList = [];
       //home에 넘겨줄 각 항목별 측정 데이터
@@ -137,7 +138,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['pm10Value'] == "-" &&
           value[0][1]['pm10Value'] == "-" &&
           value[0][2]['pm10Value'] == "-") {
-        pm10 = 0;
+        pm10 = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -162,7 +163,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['pm25Value'] == "-" &&
           value[0][1]['pm25Value'] == "-" &&
           value[0][2]['pm25Value'] == "-") {
-        pm25 = 0;
+        pm25 = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -187,7 +188,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['o3Value'] == "-" &&
           value[0][1]['o3Value'] == "-" &&
           value[0][2]['o3Value'] == "-") {
-        o3 = 0;
+        o3 = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -212,7 +213,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['no2Value'] == "-" &&
           value[0][1]['no2Value'] == "-" &&
           value[0][2]['no2Value'] == "-") {
-        no2 = 0;
+        no2 = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -237,7 +238,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['so2Value'] == "-" &&
           value[0][1]['so2Value'] == "-" &&
           value[0][2]['so2Value'] == "-") {
-        so2 = 0;
+        so2 = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -262,7 +263,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       else if (value[0][0]['coValue'] == "-" &&
           value[0][1]['coValue'] == "-" &&
           value[0][2]['coValue'] == "-") {
-        co = 0;
+        co = -1;
         stationList.add("측정소 점검중");
       } // 1번이 정상일때
       else {
@@ -293,19 +294,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       } else if (pm10Level >= pm25Level) {
         ref.read(isPm10Color.notifier).update((state) => true);
         ref.read(isMessagePm10Provider.notifier).update((state) => true);
-      } else if (pm10Level == 404 && pm25Level != 404) {
+      } else if (pm10Level == -1 && pm25Level != -1) {
         ref.read(isPm10Color.notifier).update((state) => false);
         ref.read(isMessagePm10Provider.notifier).update((state) => false);
-      } else if (pm10Level != 404 && pm25Level == 404) {
+      } else if (pm10Level != -1 && pm25Level == -1) {
         ref.read(isPm10Color.notifier).update((state) => true);
         ref.read(isMessagePm10Provider.notifier).update((state) => true);
-      } else if (pm10Level == 404 && pm25Level == 404) {
+      } else if (pm10Level == -1 && pm25Level == -1) {
         ref.read(isPm10Color.notifier).update((state) => true);
         ref.read(isMessagePm10Provider.notifier).update((state) => true);
       }
 
       if (isPm10 == true) {
-        if (pm10Level == 2) {
+        print("DDD");
+        if (pm10Level == 1) {
+          ref
+              .read(emojiProvider.notifier)
+              .update((state) => "lib/assets/image/GOOD.png");
+        } else if (pm10Level == 2) {
           ref
               .read(emojiProvider.notifier)
               .update((state) => "lib/assets/image/NICE.png");
@@ -325,12 +331,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           ref
               .read(emojiProvider.notifier)
               .update((state) => "lib/assets/image/HAZARDOUS.png");
-        } else if (pm10Level == 404) {
+        } else if (pm10Level == -1) {
           ref
               .read(emojiProvider.notifier)
               .update((state) => "lib/assets/image/FIXING.png");
         } else {
-          if (pm25Level == 2) {
+          if (pm25Level == 1) {
+            ref
+                .read(emojiProvider.notifier)
+                .update((state) => "lib/assets/image/GOOD.png");
+          } else if (pm25Level == 2) {
             ref
                 .read(emojiProvider.notifier)
                 .update((state) => "lib/assets/image/NICE.png");
@@ -350,7 +360,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ref
                 .read(emojiProvider.notifier)
                 .update((state) => "lib/assets/image/HAZARDOUS.png");
-          } else if (pm25Level == 404) {
+          } else if (pm25Level == -1) {
             ref
                 .read(emojiProvider.notifier)
                 .update((state) => "lib/assets/image/FIXING.png");

@@ -221,7 +221,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: pm10Msg == "측정소 점검중" || pm25msg == "측정소 점검중"
+                      color: pm10Msg == "측정소 점검중" && pm25msg == "측정소 점검중"
                           ? Colors.amber
                           : Colors.black),
                 ),
@@ -233,7 +233,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: pm10Msg == "측정소 점검중" || pm25msg == "측정소 점검중"
+                      color: pm10Msg == "측정소 점검중" && pm25msg == "측정소 점검중"
                           ? Colors.amber
                           : Colors.black),
                 ),
