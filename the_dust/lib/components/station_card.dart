@@ -29,7 +29,7 @@ class StationCard extends StatelessWidget {
           style: const TextStyle(
             color: Color.fromARGB(255, 128, 128, 128),
             fontWeight: FontWeight.w500,
-            fontSize: 11,
+            fontSize: 14,
           ),
         ),
         const SizedBox(

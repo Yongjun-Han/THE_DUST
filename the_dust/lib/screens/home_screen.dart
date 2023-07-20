@@ -126,7 +126,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               padding: const EdgeInsets.only(right: 16),
               child: GestureDetector(
                 onTap: () {
-                  modal(context);
+                  stationDialog();
                   // print(station);
                 },
                 child: const Icon(
@@ -278,12 +278,91 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             const SizedBox(
-              height: 12,
+              height: 40,
             )
           ],
         ),
       ),
     );
+  }
+
+  void stationDialog() {
+    showDialog(
+        context: context,
+        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+        // barrierDismissible: false,
+        builder: (BuildContext context) {
+          final List<dynamic> station = widget.data['station'];
+          final List<String> category = [
+            "미세먼지",
+            "초미세먼지",
+            "오존",
+            "이산화질소",
+            "아황산가스",
+            "일산화탄소",
+          ];
+          return AlertDialog(
+            backgroundColor: BASIC_MODAL,
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //Dialog Main Title
+            title: const Text(
+              "미세먼지 측정소 정보",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            //
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                StationCard(
+                  station: station.isNotEmpty ? station[0] : "측정소 점검중",
+                  category: category[0],
+                ),
+                StationCard(
+                  station: station.isNotEmpty ? station[1] : "측정소 점검중",
+                  category: category[1],
+                ),
+                StationCard(
+                  station: station.isNotEmpty ? station[2] : "측정소 점검중",
+                  category: category[2],
+                ),
+                StationCard(
+                  station: station.isNotEmpty ? station[3] : "측정소 점검중",
+                  category: category[3],
+                ),
+                StationCard(
+                  station: station.isNotEmpty ? station[4] : "측정소 점검중",
+                  category: category[4],
+                ),
+                StationCard(
+                  station: station.isNotEmpty ? station[5] : "측정소 점검중",
+                  category: category[5],
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                ),
+                child: const Text(
+                  "닫기",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   Future<dynamic> modal(BuildContext context) {
