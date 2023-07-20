@@ -93,7 +93,7 @@ class _Tm2NearStation implements Tm2NearStation {
     )
             .compose(
               _dio.options,
-              '/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr%2F8ak3zBXUPHau8gPpxRkoWLURTNOt%2FPPKYm5g9KrCGbVs1ohAw%3D%3D&returnType=json&numOfRows=10&pageNo=1&stationName=${stationName}&dataTerm=DAILY&ver=1.0',
+              '/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr%2F8ak3zBXUPHau8gPpxRkoWLURTNOt%2FPPKYm5g9KrCGbVs1ohAw%3D%3D&returnType=json&numOfRows=1&pageNo=1&stationName=${stationName}&dataTerm=DAILY&ver=1.0',
               queryParameters: queryParameters,
               data: _data,
             )

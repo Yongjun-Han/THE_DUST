@@ -96,8 +96,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final Color pm25ColorState = ref.watch(pm25ColorProvider);
     final String emojiPath = ref.watch(emojiProvider);
     final bool dustMessage = ref.watch(isMessagePm10Provider);
-    final bool pmColorState = ref.watch(isPm10Color);
-    print(pmColorState);
+    final bool pmColorState = ref.watch(isPm10ColorProvider);
     final String pm10Msg = ref.watch(pm10MessageProvider);
     final String pm25msg = ref.watch(pm25MessageProvider);
 

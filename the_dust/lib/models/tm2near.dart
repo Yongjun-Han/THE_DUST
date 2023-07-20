@@ -17,7 +17,7 @@ abstract class Tm2NearStation {
   // http://apis.data.go.kr/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr/8ak3zBXUPHau8gPpxRkoWLURTNOt/PPKYm5g9KrCGbVs1ohAw==&returnType=json&tmX=235230.39382175816&tmY=316227.1171354126
   //인근 측정소 이름으로 미세먼지 측정데이터 요청
   @GET(
-      "/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr%2F8ak3zBXUPHau8gPpxRkoWLURTNOt%2FPPKYm5g9KrCGbVs1ohAw%3D%3D&returnType=json&numOfRows=10&pageNo=1&stationName={stationName}&dataTerm=DAILY&ver=1.0")
+      "/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=1fBa1MM3xBTQkcg0xPlEQqd4JEkxWAqfUlMr%2F8ak3zBXUPHau8gPpxRkoWLURTNOt%2FPPKYm5g9KrCGbVs1ohAw%3D%3D&returnType=json&numOfRows=1&pageNo=1&stationName={stationName}&dataTerm=DAILY&ver=1.0")
   Future<AirConditionModel> getAirCondition({
     @Path() required String stationName,
   });
