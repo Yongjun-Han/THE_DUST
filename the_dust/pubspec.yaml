@@ -102,3 +102,9 @@ flutter:
   - lib/assets/image/HAZARDOUS.png
   - lib/assets/image/SAD.png
   - lib/assets/image/FIXING.png
+  - lib/assets/image/미세먼지 등급.png
+  - lib/assets/image/초미세먼지 등급.png
+  - lib/assets/image/오존 등급.png
+  - lib/assets/image/이산화질소 등급.png
+  - lib/assets/image/아황산가스 등급.png
+  - lib/assets/image/일산화탄소 등급.png
